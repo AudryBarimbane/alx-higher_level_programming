@@ -1,113 +1,72 @@
 #include "lists.h"
 
 /**
- * reverse_list - reverse list second half
- *
- * @hr: head
- * Return: void
- */
-void reverse_list(listint_t **hr)
-{
-	listint_t *prev;
-	listint_t *temp;
-	listint_t *next1;
-
-	prev = NULL;
-	temp = *hr;
-
-	while (temp != NULL)
-	{
-		next1 = temp->next;
-		temp->next = preb;
-		prev = temp;
-		temp = next1;
-	}
-
-	*hr = prev;
-}
-
-/**
- * compare_list - compares integers of list
- *
- * @h1: head of the first half
- * @h2: head of the second half
- * Return: 1 if are equals, 0 if not
- */
-int compare_list(listint_t *h1, listint_t *h2)
-{
-	listint_t *tmp1;
-	listint_t *tmp2;
-
-	tmp1 = h1;
-	tmp2 = h2;
-
-	while (tmp1 != NULL && tmp2 != NULL)
-	{
-		if (tmp1->n == tmp2->n)
-		{
-			tmp1 = tmp1->next;
-			tmp2 = tmp2->next;
-		}
-		else
-		{
-			return (0);
-		}
-	}
-
-	if (tmp1 == NULL && tmp2 == NULL)
-	{
-		return (1);
-	}
-
-	return (0);
-}
-
-/**
- * is_palindrome - checks if a list is a palindrome
+ * reverse_listint - reverses list
  * @head: pointer to head
- * Return: 0 if it is not a palindrome or 1 if ok
+ *
+ * Return: pointer
+ */
+void reverse_listint(listint_t **head)
+{
+	listint_t *prev = NULL;
+	listint_t *cur = *head;
+	listint_t *next = NULL;
+
+	while (cur)
+	{
+		next = cur->next;
+		cur->next = prev;
+		prev = cur;
+		cur = next;
+	}
+
+	*head = prev;
+}
+
+/**
+ * is_palindrome - list is a palindrome
+ * @head: double pointer
+ *
+ * Return: 1 or 0
  */
 int is_palindrome(listint_t **head)
 {
-	listint_t *sl, *fl, *prev_sl;
-	listint_t *l_half, *m;
-	int pal;
+	listint_t *sl = *head, *fa = *head, *temp = *head, *du = NULL;
 
-	sl = fl = prev_sl = *head;
-	m = NULL;
-	pal = 1;
+	if (*head == NULL || (*head)->next == NULL)
+		return (1);
 
-	if (*head != NULL && (*head)->next != NULL)
+	while (1)
 	{
-		while (fl != NULL && fl->next != NULL)
+		fa = fa->next->next;
+		if (!fa)
 		{
-			fl = fl->next->next;
-			prev_sl = sl;
-			sl = sl->next;
+			du = sl->next;
+			break;
 		}
-
-		if (fl != NULL)
+		if (!fa->next)
 		{
-			m = sl;
-			sl = sl->next;
+			du = sl->next->next;
+			break;
 		}
-
-		l_half = sl;
-		prev_sl->next = NULL;
-		reverse_list(&scn_half);
-		pal = compare_list(*head, scn_half);
-
-		if (m != NULL)
-		{
-			prev_sl->next = m;
-			m->next = l_half;
-		}
-		else
-		{
-			prev_sl->next = l_half;
-		}
+		sl = sl->next;
 	}
 
-	return (pal);
-}
+	reverse_listint(&du);
 
+	while (du && temp)
+	{
+		if (temp->n == du->n)
+		{
+			du = du->next;
+			temp = temp->next;
+		}
+		else
+			return (0);
+	}
+
+	if (!du)
+		return (1);
+
+	return (0);
+}
